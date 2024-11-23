@@ -18,6 +18,11 @@ class _SettingsPageState extends State<SettingsPage> {
         "gpt-4o": "GPT-4o",
         "gpt-4o-mini": "GPT-4o mini",
       }),
+      const SwitchSettingsTile(
+        title: "Auto-scroll on translate",
+        settingKey: autoScrollOnTranslateSettingsKey,
+        defaultValue: true,
+      ),
       const AboutListTile(icon: Icon(Icons.info), applicationLegalese: "\u{a9} 2024 Kevin López Brante"),
     ]);
   }

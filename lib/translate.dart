@@ -46,7 +46,9 @@ class _TranslatePageState extends State<TranslatePage> {
         _progressing = true;
         if (content != null) {
           _result += content.map((e) => e?.text ?? "").join();
-          _controller.animateTo(_controller.position.maxScrollExtent, duration: const Duration(milliseconds: 50), curve: Curves.easeInOut);
+          if (Settings.getValue<bool>(autoScrollOnTranslateSettingsKey) ?? true) {
+            _controller.animateTo(_controller.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+          }
         }
       });
     }).onDone(() {

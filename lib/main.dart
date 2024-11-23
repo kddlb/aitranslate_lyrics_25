@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "AITranslate Lyrics", home: const HomePage(), debugShowCheckedModeBanner: false, themeMode: ThemeMode.system, theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange), darkTheme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark));
+    return MaterialApp(title: "AITranslate Lyrics", home: const HomePage(), debugShowCheckedModeBanner: false, themeMode: ThemeMode.system, theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange), darkTheme: ThemeData(useMaterial3: false, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark));
   }
 }
 
@@ -88,9 +88,15 @@ class _HomePageState extends State<HomePage> {
               message: 'Settings',
               child: IconButton(
                   onPressed: () {
-                    Navigator.of(context).push(
+                    /*Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => const SettingsPage()),
-                    );
+                    );*/
+                    showModalBottomSheet(
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const SettingsPage();
+                        });
                   },
                   icon: const Icon(Icons.settings)))
         ],

@@ -1,5 +1,6 @@
 const openAiApiKeySettingsKey = 'openAiApiKey';
 const openAiModelSettingsKey = 'openAiModel';
+const autoScrollOnTranslateSettingsKey = 'autoScrollOnTranslate';
 
 const openAiPrompt = """
 Translate the song lyrics from the source language to the target language. 
