@@ -17,4 +17,16 @@ jobs:
         with:
           channel: stable
       - run: flutter build windows
+      - name: Zip built files
+        run: |
+          cd build/windows/runner/Release
+          tar -czvf artifact.zip ./*
+  
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: built-windows-artifact
+          path: build/windows/runner/Release/artifact.zip
+
+
 
