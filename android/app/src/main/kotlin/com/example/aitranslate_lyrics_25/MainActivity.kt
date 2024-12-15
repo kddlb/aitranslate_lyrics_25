@@ -1,4 +1,4 @@
-package cl.kddlb.aitranslate_lyrics_25
+package com.example.aitranslate_lyrics_25
 
 import io.flutter.embedding.android.FlutterActivity
 
