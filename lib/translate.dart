@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aitranslate_lyrics_25/consts.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,19 @@ class _TranslatePageState extends State<TranslatePage> {
       setState(() {
         _loading = false;
         _progressing = true;
+        //if there's a finish reason, snackbar it
+        if (event.choices.first.finishReason != null) {
+          switch (event.choices.first.finishReason!) {
+            case "length":
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Translation is too long")));
+              break;
+            case "stop":
+              break;
+            case "content_filter":
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Translation contains inappropriate content, according to OpenAI's content filter")));
+              break;
+          }
+        }
         if (content != null) {
           _result += content.map((e) => e?.text ?? "").join();
           if (Settings.getValue<bool>(autoScrollOnTranslateSettingsKey) ?? true) {
@@ -51,11 +66,20 @@ class _TranslatePageState extends State<TranslatePage> {
           }
         }
       });
-    }).onDone(() {
-      setState(() {
-        _progressing = false;
+    })
+      ..onError((err) {
+        setState(() {
+          _loading = false;
+          _progressing = false;
+          //show snackbar with error
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+        });
+      })
+      ..onDone(() {
+        setState(() {
+          _progressing = false;
+        });
       });
-    });
   }
 
   @override

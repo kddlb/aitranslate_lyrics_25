@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="aitranslate_lyrics_25"
+        android:label="AITranslate Lyrics"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
