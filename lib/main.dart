@@ -84,21 +84,29 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("AITranslate Lyrics"),
         actions: [
-          Tooltip(
-              message: 'Settings',
-              child: IconButton(
-                  onPressed: () {
-                    /*Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SettingsPage()),
-                    );*/
-                    showModalBottomSheet(
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const SettingsPage();
-                        });
-                  },
-                  icon: const Icon(Icons.settings)))
+          IconButton(
+            onPressed: () {
+              _txedSourceLanguage.clear();
+              _txedTargetLanguage.clear();
+              _txedContents.clear();
+            },
+            icon: const Icon(Icons.clear),
+            tooltip: 'Clear',
+          ),
+          IconButton(
+              onPressed: () {
+                /*Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );*/
+                showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const SettingsPage();
+                    });
+              },
+              tooltip: 'Settings',
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: Form(
