@@ -21,11 +21,10 @@ import 'messages_en.dart' as messages_en;
 import 'messages_es.dart' as messages_es;
 import 'messages_fr.dart' as messages_fr;
 import 'messages_it.dart' as messages_it;
-import 'messages_ja_JP.dart' as messages_ja_jp;
-import 'messages_ko_KR.dart' as messages_ko_kr;
-import 'messages_ua.dart' as messages_ua;
-import 'messages_zh_CN.dart' as messages_zh_cn;
-import 'messages_zh_TW.dart' as messages_zh_tw;
+import 'messages_ja.dart' as messages_ja;
+import 'messages_ko.dart' as messages_ko;
+import 'messages_uk.dart' as messages_uk;
+import 'messages_zh.dart' as messages_zh;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
@@ -34,11 +33,10 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'es': () => new SynchronousFuture(null),
   'fr': () => new SynchronousFuture(null),
   'it': () => new SynchronousFuture(null),
-  'ja_JP': () => new SynchronousFuture(null),
-  'ko_KR': () => new SynchronousFuture(null),
-  'ua': () => new SynchronousFuture(null),
-  'zh_CN': () => new SynchronousFuture(null),
-  'zh_TW': () => new SynchronousFuture(null),
+  'ja': () => new SynchronousFuture(null),
+  'ko': () => new SynchronousFuture(null),
+  'uk': () => new SynchronousFuture(null),
+  'zh': () => new SynchronousFuture(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
@@ -53,16 +51,14 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_fr.messages;
     case 'it':
       return messages_it.messages;
-    case 'ja_JP':
-      return messages_ja_jp.messages;
-    case 'ko_KR':
-      return messages_ko_kr.messages;
-    case 'ua':
-      return messages_ua.messages;
-    case 'zh_CN':
-      return messages_zh_cn.messages;
-    case 'zh_TW':
-      return messages_zh_tw.messages;
+    case 'ja':
+      return messages_ja.messages;
+    case 'ko':
+      return messages_ko.messages;
+    case 'uk':
+      return messages_uk.messages;
+    case 'zh':
+      return messages_zh.messages;
     default:
       return null;
   }
