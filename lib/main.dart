@@ -4,6 +4,7 @@ import 'package:aitranslate_lyrics_25/settings.dart';
 import 'package:aitranslate_lyrics_25/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -28,8 +29,8 @@ class MainApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: [
         S.delegate,
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
       ],);
   }
 }
