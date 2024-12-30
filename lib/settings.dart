@@ -1,4 +1,5 @@
 import 'package:aitranslate_lyrics_25/consts.dart';
+import 'package:aitranslate_lyrics_25/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
@@ -13,13 +14,13 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return SettingsScreen(children: [
-      TextInputSettingsTile(title: "API key", settingKey: openAiApiKeySettingsKey, validator: (ak) => (ak != null && ak.isNotEmpty) ? null : "API key is required."),
-      const RadioSettingsTile(title: "Model", settingKey: openAiModelSettingsKey, selected: "gpt-4o", values: {
+      TextInputSettingsTile(title: S.of(context).settingsAPIKey, settingKey: openAiApiKeySettingsKey, validator: (ak) => (ak != null && ak.isNotEmpty) ? null : S.of(context).settingsAPIKeyValidationError),
+      RadioSettingsTile(title: S.of(context).settingsModel, settingKey: openAiModelSettingsKey, selected: "gpt-4o", values: {
         "gpt-4o": "GPT-4o",
         "gpt-4o-mini": "GPT-4o mini",
       }),
-      const SwitchSettingsTile(
-        title: "Auto-scroll on translate",
+      SwitchSettingsTile(
+        title: S.of(context).settingsAutoScroll,
         settingKey: autoScrollOnTranslateSettingsKey,
         defaultValue: true,
       ),

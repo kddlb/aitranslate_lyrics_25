@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:aitranslate_lyrics_25/consts.dart';
+import 'package:aitranslate_lyrics_25/generated/l10n.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
@@ -50,19 +49,19 @@ class _TranslatePageState extends State<TranslatePage> {
         if (event.choices.first.finishReason != null) {
           switch (event.choices.first.finishReason!) {
             case "length":
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Translation is too long")));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).errLength)));
               break;
             case "stop":
               break;
             case "content_filter":
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Translation contains inappropriate content, according to OpenAI's content filter")));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).errContentFilter)));
               break;
           }
         }
         if (content != null) {
           _result += content.map((e) => e?.text ?? "").join();
           if (Settings.getValue<bool>(autoScrollOnTranslateSettingsKey) ?? true) {
-            _controller.animateTo(_controller.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+            _controller.animateTo(_controller.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
           }
         }
       });
@@ -90,7 +89,7 @@ class _TranslatePageState extends State<TranslatePage> {
         controller: _controller,
         slivers: [
           SliverAppBar(
-              title: const Text('Translation'),
+              title: Text(S.of(context).translationTitle),
               floating: true,
               snap: true,
               pinned: true,

@@ -23,14 +23,6 @@ Ensure that the formatting of the HTML is preserved in the output, with each lin
 - Produce a complete HTML output, which includes the original source along with the translated version in a separate column.
 - The HTML tags must be properly formatted, ensuring both versions of the lyrics are clearly distinguishable.
 
-**For example:**
-
-<table>
-    <tr><th>Spanish (Chile, es_CL)</th><th>English (United States, en_US)</th></tr>
-    <tr><td>La vida es un sueño</td><td>Life is a dream</td></tr>
-    <tr><td>y los sueños, sueños son</td><td>and dreams are just dreams</td></tr>
-</table>
-
 # Notes
 
 - Make sure to keep the translation as close as possible to the original meaning of the song.

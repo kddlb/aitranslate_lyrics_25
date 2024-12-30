@@ -1,4 +1,5 @@
 import 'package:aitranslate_lyrics_25/consts.dart';
+import 'package:aitranslate_lyrics_25/generated/l10n.dart';
 import 'package:aitranslate_lyrics_25/settings.dart';
 import 'package:aitranslate_lyrics_25/translate.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "AITranslate Lyrics", home: const HomePage(), debugShowCheckedModeBanner: false, themeMode: ThemeMode.system, theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange), darkTheme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark));
+    return MaterialApp(
+      title: "AITranslate Lyrics", 
+      home: const HomePage(), 
+      debugShowCheckedModeBanner: false, 
+      themeMode: ThemeMode.system, 
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange), 
+      darkTheme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark),
+      supportedLocales: S.delegate.supportedLocales,
+      localizationsDelegates: [
+        S.delegate,
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],);
   }
 }
 
@@ -46,14 +59,14 @@ class _HomePageState extends State<HomePage> {
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
-                  title: const Text("An OpenAI API key is required."),
-                  content: const Text("The API key is stored in your device and is sent directly to OpenAI."),
+                  title: Text(S.of(context).firstStartNoAPIKeyDialogTitle),
+                  content: Text(S.of(context).firstStartNoAPiKeyDialogText),
                   actions: [
                     TextButton(
                         onPressed: () {
                           launchUrlString("https://platform.openai.com/api-keys");
                         },
-                        child: const Text("Go to the OpenAI dashboard")),
+                        child: Text(S.of(context).firstStartNoAPIKeyDialogButtonGo)),
                     TextButton(
                         onPressed: () {
                           Navigator.of(context)
@@ -62,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(builder: (context) => const SettingsPage()),
                             );
                         },
-                        child: const Text("Set"))
+                        child: Text(S.of(context).firstStartNoAPIKeyDialogButtonSet))
                   ],
                 ));
       });
@@ -91,7 +104,18 @@ class _HomePageState extends State<HomePage> {
               _txedContents.clear();
             },
             icon: const Icon(Icons.clear),
-            tooltip: 'Clear',
+            tooltip: S.of(context).actionClear,
+          ),
+          IconButton(
+            onPressed: () {
+              String temp = _txedSourceLanguage.text;
+              setState(() {
+                _txedSourceLanguage.text = _txedTargetLanguage.text;
+                _txedTargetLanguage.text = temp;
+              });
+            },
+            icon: const Icon(Icons.swap_horiz),
+            tooltip: S.of(context).actionSwap,
           ),
           IconButton(
               onPressed: () {
@@ -105,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                       return const SettingsPage();
                     });
               },
-              tooltip: 'Settings',
+              tooltip: S.of(context).actionSettings,
               icon: const Icon(Icons.settings))
         ],
       ),
@@ -119,7 +143,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               TextFormField(
                 controller: _txedSourceLanguage,
-                decoration: const InputDecoration(labelText: 'Source language', border: OutlineInputBorder(), hintText: "Keep empty to detect language"),
+                decoration: InputDecoration(labelText: S.of(context).txSourceLanguage, border: OutlineInputBorder(), hintText: S.of(context).txSourceLanguageHint),
               ),
               const SizedBox(height: 16.0),
               Expanded(
@@ -129,11 +153,11 @@ class _HomePageState extends State<HomePage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null, // Allow unlimited lines
                   expands: true, // Allow TextArea to expand vertically
-                  decoration: const InputDecoration(alignLabelWithHint: true, labelText: 'Lyrics to translate', border: OutlineInputBorder()),
+                  decoration: InputDecoration(alignLabelWithHint: true, labelText: S.of(context).txSourceText, border: OutlineInputBorder()),
                   textAlignVertical: TextAlignVertical.top,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return S.of(context).txSourceTextValidationError;
                     }
                     return null;
                   },
@@ -142,10 +166,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _txedTargetLanguage,
-                decoration: const InputDecoration(labelText: 'Language to translate to', border: OutlineInputBorder()),
+                decoration: InputDecoration(labelText: S.of(context).txTargetLanguage, border: OutlineInputBorder()),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a language';
+                    return S.of(context).txTargetLanguageValidationError;
                   }
                   return null;
                 },
@@ -165,9 +189,9 @@ class _HomePageState extends State<HomePage> {
 
           if (ak == null || ak.isEmpty) {
             var errorSnackBar = SnackBar(
-                content: const Text("An API key is required."),
+                content: Text(S.of(context).errNoAPiKey),
                 action: SnackBarAction(
-                    label: "Set",
+                    label: S.of(context).firstStartNoAPIKeyDialogButtonSet,
                     onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SettingsPage(),
                         ))));
@@ -213,7 +237,7 @@ class _HomePageState extends State<HomePage> {
             }
           }
         },
-        label: const Text("Translate"),
+        label: Text(S.of(context).txFabTranslate),
         icon: const Icon(Icons.translate),
       ),
     );
