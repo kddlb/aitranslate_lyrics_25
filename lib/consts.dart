@@ -30,4 +30,5 @@ Ensure that the formatting of the HTML is preserved in the output, with each lin
 - The final output should be a well-formed HTML with a `<table>` structure that neatly pairs the original lyrics with their translations.
 - Do not use codeblocks; output HTML directly. 
 - The column headings should be in this format: {language} ({country}, {ISO code of language}_{ISO CODE OF COUNTRY})
+- Make sure there are only two columns in the table.  
 """;
