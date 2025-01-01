@@ -7,15 +7,26 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:adwaita/adwaita.dart';
+import 'dart:io' show Platform;
+
 
 void main() async {
   await Settings.init();
 
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
+
+  var lightTheme = Platform.isLinux ?
+    AdwaitaThemeData.light() :
+    ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange);
+  
+  var darkTheme = Platform.isLinux ? 
+    AdwaitaThemeData.dark() :
+    ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +35,8 @@ class MainApp extends StatelessWidget {
       home: const HomePage(), 
       debugShowCheckedModeBanner: false, 
       themeMode: ThemeMode.system, 
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange), 
-      darkTheme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark),
+      theme: lightTheme, 
+      darkTheme: darkTheme,
       supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: [
         S.delegate,

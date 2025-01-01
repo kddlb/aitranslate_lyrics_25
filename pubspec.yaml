@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  adwaita: ^1.1.0
   dart_openai: ^5.1.0
   flutter:
     sdk: flutter
