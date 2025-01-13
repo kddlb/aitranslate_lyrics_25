@@ -31,9 +31,13 @@ class _TranslatePageState extends State<TranslatePage> {
 
     OpenAI.apiKey = apiKey!;
 
-    final systemMessage = OpenAIChatCompletionChoiceMessageModel(content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(openAiPrompt)], role: OpenAIChatMessageRole.system);
+    final systemMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(openAiPrompt)
+    ], role: OpenAIChatMessageRole.system);
 
-    final userMessage = OpenAIChatCompletionChoiceMessageModel(content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(widget.table)], role: OpenAIChatMessageRole.user);
+    final userMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(widget.table)
+    ], role: OpenAIChatMessageRole.user);
 
     final chatStream = OpenAI.instance.chat.createStream(
       model: model!,
@@ -49,19 +53,23 @@ class _TranslatePageState extends State<TranslatePage> {
         if (event.choices.first.finishReason != null) {
           switch (event.choices.first.finishReason!) {
             case "length":
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).errLength)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(S.of(context).errLength)));
               break;
             case "stop":
               break;
             case "content_filter":
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).errContentFilter)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(S.of(context).errContentFilter)));
               break;
           }
         }
         if (content != null) {
           _result += content.map((e) => e?.text ?? "").join();
-          if (Settings.getValue<bool>(autoScrollOnTranslateSettingsKey) ?? true) {
-            _controller.animateTo(_controller.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+          if (Settings.getValue<bool>(autoScrollOnTranslateSettingsKey) ??
+              true) {
+            _controller.animateTo(_controller.position.maxScrollExtent,
+                duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
           }
         }
       });
@@ -71,7 +79,8 @@ class _TranslatePageState extends State<TranslatePage> {
           _loading = false;
           _progressing = false;
           //show snackbar with error
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(err.toString())));
         });
       })
       ..onDone(() {
@@ -84,38 +93,35 @@ class _TranslatePageState extends State<TranslatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+            title: Text(S.of(context).translationTitle),
+            bottom: _progressing
+                ? const PreferredSize(
+                    preferredSize: Size.fromHeight(4.0),
+                    child: LinearProgressIndicator(),
+                  )
+                : null),
         body: SelectionArea(
-      child: CustomScrollView(
-        controller: _controller,
-        slivers: [
-          SliverAppBar(
-              title: Text(S.of(context).translationTitle),
-              floating: true,
-              snap: true,
-              pinned: true,
-              bottom: _progressing
-                  ? const PreferredSize(
-                      preferredSize: Size.fromHeight(4.0),
-                      child: LinearProgressIndicator(),
-                    )
-                  : null),
-          if (_loading)
-            const SliverFillRemaining(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          else
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: HtmlWidget(
-                _result,
-                renderMode: RenderMode.sliverList,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-              ),
-            )
-        ],
-      ),
-    ));
+          child: CustomScrollView(
+            controller: _controller,
+            slivers: [
+              if (_loading)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.all(8),
+                  sliver: HtmlWidget(
+                    _result,
+                    renderMode: RenderMode.sliverList,
+                    textStyle: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                )
+            ],
+          ),
+        ));
   }
 }
