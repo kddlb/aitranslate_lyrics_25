@@ -7,9 +7,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:adwaita/adwaita.dart';
-import 'dart:io' show Platform;
-
 
 void main() async {
   await Settings.init();
@@ -18,31 +15,32 @@ void main() async {
 }
 
 class MainApp extends StatelessWidget {
-  MainApp({super.key});
+  late final ThemeData lightTheme;
+  late final ThemeData darkTheme;
 
-  var lightTheme = Platform.isLinux ?
-    AdwaitaThemeData.light() :
-    ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange);
-  
-  var darkTheme = Platform.isLinux ? 
-    AdwaitaThemeData.dark() :
-    ThemeData(useMaterial3: true, colorSchemeSeed: Colors.deepOrange, brightness: Brightness.dark);
+  MainApp({super.key}) {
+    lightTheme = ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: const Color.fromARGB(255, 146, 17, 252));
+    darkTheme = lightTheme.copyWith(brightness: Brightness.dark);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "AITranslate Lyrics", 
-      home: const HomePage(), 
-      debugShowCheckedModeBanner: false, 
-      themeMode: ThemeMode.system, 
-      theme: lightTheme, 
+      title: "AITranslate Lyrics",
+      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
+      theme: lightTheme,
       darkTheme: darkTheme,
       supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-      ],);
+      ],
+    );
   }
 }
 
@@ -76,18 +74,22 @@ class _HomePageState extends State<HomePage> {
                   actions: [
                     TextButton(
                         onPressed: () {
-                          launchUrlString("https://platform.openai.com/api-keys");
+                          launchUrlString(
+                              "https://platform.openai.com/api-keys");
                         },
-                        child: Text(S.of(context).firstStartNoAPIKeyDialogButtonGo)),
+                        child: Text(
+                            S.of(context).firstStartNoAPIKeyDialogButtonGo)),
                     TextButton(
                         onPressed: () {
                           Navigator.of(context)
                             ..pop()
                             ..push(
-                              MaterialPageRoute(builder: (context) => const SettingsPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => const SettingsPage()),
                             );
                         },
-                        child: Text(S.of(context).firstStartNoAPIKeyDialogButtonSet))
+                        child: Text(
+                            S.of(context).firstStartNoAPIKeyDialogButtonSet))
                   ],
                 ));
       });
@@ -135,7 +137,8 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );*/
                 showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     context: context,
                     builder: (BuildContext context) {
                       return const SettingsPage();
@@ -155,7 +158,10 @@ class _HomePageState extends State<HomePage> {
             children: [
               TextFormField(
                 controller: _txedSourceLanguage,
-                decoration: InputDecoration(labelText: S.of(context).txSourceLanguage, border: OutlineInputBorder(), hintText: S.of(context).txSourceLanguageHint),
+                decoration: InputDecoration(
+                    labelText: S.of(context).txSourceLanguage,
+                    border: OutlineInputBorder(),
+                    hintText: S.of(context).txSourceLanguageHint),
               ),
               const SizedBox(height: 16.0),
               Expanded(
@@ -165,7 +171,10 @@ class _HomePageState extends State<HomePage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null, // Allow unlimited lines
                   expands: true, // Allow TextArea to expand vertically
-                  decoration: InputDecoration(alignLabelWithHint: true, labelText: S.of(context).txSourceText, border: OutlineInputBorder()),
+                  decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      labelText: S.of(context).txSourceText,
+                      border: OutlineInputBorder()),
                   textAlignVertical: TextAlignVertical.top,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -178,7 +187,9 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _txedTargetLanguage,
-                decoration: InputDecoration(labelText: S.of(context).txTargetLanguage, border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                    labelText: S.of(context).txTargetLanguage,
+                    border: OutlineInputBorder()),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.of(context).txTargetLanguageValidationError;
@@ -204,15 +215,19 @@ class _HomePageState extends State<HomePage> {
                 content: Text(S.of(context).errNoAPiKey),
                 action: SnackBarAction(
                     label: S.of(context).firstStartNoAPIKeyDialogButtonSet,
-                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    onPressed: () =>
+                        Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SettingsPage(),
                         ))));
             ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
           } else {
             if (_formKey.currentState!.validate()) {
-              List<String> contents = _txedContents.text.split(RegExp("\n\\s*\n"));
+              List<String> contents =
+                  _txedContents.text.split(RegExp("\n\\s*\n"));
 
-              String sourceLanguage = _txedSourceLanguage.text.isEmpty ? "detect" : _txedSourceLanguage.text;
+              String sourceLanguage = _txedSourceLanguage.text.isEmpty
+                  ? "detect"
+                  : _txedSourceLanguage.text;
               String targetLanguage = _txedTargetLanguage.text;
 
               //convert contents to HTML table
